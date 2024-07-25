@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <ESP8266WiFi.h>
 #include "GSLog.h"
-#include "secret.h"
+#include "../secret.h"
 
 // defined in secret.h
 // #define SSID "xxxxx"
