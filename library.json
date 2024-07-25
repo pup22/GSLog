@@ -1,5 +1,5 @@
 {
-  "name": "GSLog",
+  "name": "GoogleSheetLog",
   "version": "0.0.1",
   "description": "Used for logging in Google sheets. Используется для ведения логов в таблицах Гугл.",
   "keywords": "esp8266, Google, Sheets, GoogleSheets, Log, Logger",
