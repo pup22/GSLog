@@ -10,7 +10,7 @@
   },
   "dependencies":
   {
-      "https://github.com/pup22/HTTPSRedirect.git"
+    "external-repo" : "https://github.com/pup22/HTTPSRedirect.git"
   },
   "frameworks": "arduino",
   "platforms": "*"
