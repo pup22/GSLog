@@ -8,8 +8,9 @@
     "type": "git",
     "url": "https://github.com/pup22/GSLog"
   },
-  "dependencies": {
-    "https://github.com/pup22/HTTPSRedirect.git": "2.1.1"
+  "dependencies":
+  {
+      "https://github.com/pup22/HTTPSRedirect.git"
   },
   "frameworks": "arduino",
   "platforms": "*"
