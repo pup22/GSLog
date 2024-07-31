@@ -1,17 +1,17 @@
 {
-  "name": "GoogleSheetLog",
-  "version": "0.0.1",
-  "description": "Used for logging in Google sheets. Используется для ведения логов в таблицах Гугл.",
-  "keywords": "esp8266, Google, Sheets, GoogleSheets, Log, Logger",
-  "repository":
+  "name" : "GoogleSheetLog",
+  "version" : "0.0.1",
+  "description" : "Used for logging in Google sheets. Используется для ведения логов в таблицах Гугл.",
+  "keywords" : "esp8266, Google, Sheets, GoogleSheets, Log, Logger",
+  "repository" :
   {
-    "type": "git",
-    "url": "https://github.com/pup22/GSLog"
+    "type" : "git",
+    "url" : "https://github.com/pup22/GSLog"
   },
-  "dependencies":
+  "dependencies" :
   {
     "external-repo" : "https://github.com/pup22/HTTPSRedirect.git"
   },
-  "frameworks": "arduino",
-  "platforms": "*"
+  "frameworks" : "arduino",
+  "platforms" : "*"
 }
