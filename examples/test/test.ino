@@ -7,7 +7,7 @@
 // #define SSID "xxxxx"
 // #define PASS "xxxxxxxxxx"
 // Enter Google Script Deployment ID:
-// #define GScriptId "AKfycbyoWiQTpcWuPUzowfvEG5akZXqN3WGcCyKzMkW2Tt2Mjejyq8kn6H6F_ia8SXvn77dV"
+// #define GSCRIPT_ID "AKfycbyoWiQTpcWuPUzowfvEG5akZXqN3WGcCyKzMkW2Tt2Mjejyq8kn6H6F_ia8SXvn77dV"
 
 GSLog gsl;
 
@@ -27,7 +27,8 @@ void setup() {
     Serial.println(WiFi.localIP());
   }
 
-  if(!gsl.begin( GScriptId , "SheetLog", "time", "temperature", "ID")){
+  if(!gsl.begin( GSCRIPT_ID , "SheetLog", "time", "temperature", "ID"))
+  {
     Serial.println("no connected!");
   }
 
@@ -36,7 +37,10 @@ void setup() {
 
   uint16_t i{99};
   // Вставляет во вторую строку. Пять значений или меньше. Если содержимое ячейки начинается с "=" , оно интерпретируется как формула.
-  gsl.insertRow("insert", String(i), "setup()", String(215), "=B2+D2");
+  if(!gsl.insertRow("insert", String(i), "setup()", String(215), "=B2+D2"))
+  {
+    Serial.println("no connected!");
+  }
 
   // Возвращает значение указанной ячейки
   Serial.print("\nCell 'B2' = ");
@@ -64,8 +68,11 @@ void loop() {
     y += x * 2;
     
     START_TIME_SENSOR_MS
-    // отправка данных длится 3-4 секунды!
-    gsl.insertRow(String(millis()), "23°C", String(id), String(y), "=C2+D2");
+    // отправка данных длится 3-4 секунды! (косяк в парсере HTTPSRedirect)
+    if(!gsl.insertRow(String(millis()), "23°C", String(id), String(y), "=C2+D2"))
+    {
+      PRINTLN_RS("ERROR. No insert.");
+    }
     STOP_TIME_SENSOR_MS
   }
   // static int i{0};i++;Serial.print(i);Serial.println(" *********************** ");

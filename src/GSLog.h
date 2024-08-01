@@ -1,26 +1,12 @@
 #pragma once
 
-#ifdef DEBUG_RS
-  #define PRINT_RS(...)  Serial.print(__VA_ARGS__)
-  #define PRINTLN_RS(...) Serial.println(__VA_ARGS__)
-  #define PRINTF_RS(...)  Serial.printf(__VA_ARGS__)
-  #define START_TIME_SENSOR_MS uint32_t __ms__ = millis();
-  #define STOP_TIME_SENSOR_MS   __ms__ = millis() - __ms__; if (__ms__ > 100) Serial.println(String("############## time: ") + __ms__ + String(" ms"));
-#else
-  #define PRINT_RS(...)
-  #define PRINTLN_RS(...)
-  #define PRINTF_RS(...)
-  #define START_TIME_SENSOR_MS
-  #define STOP_TIME_SENSOR_MS
-#endif
-
+#include "DebugMacros.h"
 #include "HTTPSRedirect.h"
 
 class GSLog : public HTTPSRedirect{
   private:
     const int _port;
     const char* _host = "script.google.com";
-    // String _GScriptId;
     String _SheetName;
     String _url;
 
@@ -33,7 +19,6 @@ class GSLog : public HTTPSRedirect{
       setInsecure();
       setPrintResponseBody(false); // выводит ответ в сериал
       setContentTypeHeader("application/json");
-      // _GScriptId = GScriptId;
       _SheetName = SheetName;
       _url  = "/macros/s/" + GScriptId + "/exec";
       bool ret_c = HTTPSRedirect::connect(_host, _port);
@@ -41,8 +26,17 @@ class GSLog : public HTTPSRedirect{
       return ret_c & ret_i;
     }
 
+    /**
+     * читает ячейку с адресом вида 'A1', в случае неудачи возвращает '_NaN_'
+     */
     String getValue(String cell)
     {
+      if(!connected())
+      {
+        PRINTLN_RS("reconnect http!!!");
+        if(!connect(_host, _port)) return "_NaN_";
+      }
+
       String payload = R"({"sheet_name": ")" + _SheetName + R"(", "command": "get_cell_value", "values": ")" + cell + R"(,,,,,"})";
 
       if(POST(_url, _host, payload)){
@@ -63,6 +57,12 @@ class GSLog : public HTTPSRedirect{
 
     bool insertRow(String str0 = "", String str1 = "", String str2 = "", String str3 = "", String str4 = "")
     {
+      if(!connected())
+      {
+        PRINTLN_RS("reconnect http!!!");
+        if(!connect(_host, _port)) return false;
+      }
+
       String payload = R"({"sheet_name": ")" + _SheetName + 
           R"(", "command": "insert_row", "values": ")" + str0 + "," + str1 + "," + str2 + "," + str3 + "," + str4 + R"("})";
 
@@ -82,6 +82,12 @@ class GSLog : public HTTPSRedirect{
 
     bool addRow(String str0 = "", String str1 = "", String str2 = "", String str3 = "", String str4 = "")
     {
+      if(!connected())
+      {
+        PRINTLN_RS("reconnect http!!!");
+        if(!connect(_host, _port)) return false;
+      }
+
       String payload = R"({"sheet_name": ")" + _SheetName + 
           R"(", "command": "append_row", "values": ")" + str0 + "," + str1 + "," + str2 + "," + str3 + "," + str4 + R"("})";
 
